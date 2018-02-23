@@ -1,0 +1,105 @@
+# **********************************************************************
+# Made by Laurence Keijzer
+#
+# Bases partially on "CPU Panel (6-core)" theme for Conky by Tony George (teejee2008@gmail.com)"
+# **********************************************************************
+
+
+background yes
+double_buffer yes
+
+alignment top_right
+
+border_width 1
+cpu_avg_samples 2
+default_color white
+default_outline_color white
+default_shade_color white
+draw_borders no
+draw_graph_borders yes
+draw_outline no
+draw_shades no
+
+gap_x -1080
+gap_y -160
+net_avg_samples 2
+no_buffers yes
+out_to_console no
+out_to_stderr no
+extra_newline no
+
+own_window yes
+own_window_type normal
+own_window_transparent no
+own_window_colour 000000
+own_window_argb_visual yes
+own_window_argb_value 128
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+
+minimum_size 300 200
+stippled_borders 0
+update_interval 1.0
+uppercase no
+use_spacer none
+
+show_graph_scale no
+show_graph_range no
+
+use_xft yes
+xftalpha 0.1
+xftfont Droid Sans:size=12
+color0 white
+color1 EAEAEA
+color2 FCB776
+color3 grey
+color4 EFE140
+
+TEXT
+$alignr${color0}${font FontAwesome:pixelsize=105}${time %H:%M}
+${voffset -80}${offset 7}${font FontAwesome:pixelsize=35}${time %d} ${time  %B} ${time %Y}
+${voffset 0}${font FontAwesome:size=18}${color4}CPU ${color0} ${cpu cpu0}%  ${color3}${cpubar cpu0 18,}
+${cpugraph cpu0 100,300}${voffset -25}
+${cpugraph cpu1 50,100}${cpugraph cpu2 50,100}${cpugraph cpu3 50,100}${voffset -25}
+${cpugraph cpu4 50,100}${cpugraph cpu5 50,100}${cpugraph cpu6 50,100}${voffset -25}
+${cpugraph cpu7 50,100}${cpugraph cpu8 50,100}${cpugraph cpu9 50,100}${voffset -25}
+${cpugraph cpu10 50,100}${cpugraph cpu11 50,100}${cpugraph cpu12 50,100}${voffset -25}
+# Change font and color
+${font FontAwesome:size=10}${color2}
+${voffset -230}${goto 10}1 ${goto 110}2 ${goto 210}3
+${voffset 37}${goto 10}4 ${goto 110}5 ${goto 210}6 
+${voffset 37}${goto 10}7 ${goto 110}8 ${goto 210}9
+${voffset 37}${goto 10}10 ${goto 110}11 ${goto 210}12
+# Actual frequencies
+${voffset -180}${goto 48}${freq_g (1)}GHz ${goto 148}${freq_g (2)}GHz ${goto 248}${freq_g (3)}GHz
+${voffset 37}${goto 48}${freq_g (4)}GHz ${goto 148}${freq_g (5)}GHz ${goto 248}${freq_g (6)}GHz
+${voffset 37}${goto 48}${freq_g (7)}GHz ${goto 148}${freq_g (8)}GHz ${goto 248}${freq_g (9)}GHz
+${voffset 37}${goto 48}${freq_g (10)}GHz ${goto 148}${freq_g (11)}GHz ${goto 248}${freq_g (12)}GHz
+# Temperatures
+${voffset -165}${goto 58}${execi 1 sensors | grep 'Core 0' | cut -c17-23}${goto 158}${execi 1 sensors | grep 'Core 1' | cut -c17-23}${goto 258}${execi 1 sensors | grep 'Core 2' | cut -c17-23}
+${voffset 37}${goto 58}${execi 1 sensors | grep 'Core 0' | cut -c17-23}${goto 158}${execi 1 sensors | grep 'Core 1' | cut -c17-23}${goto 258}${execi 1 sensors | grep 'Core 2' | cut -c17-23}
+${voffset 37}${goto 58}${execi 1 sensors | grep 'Core 0' | cut -c17-23}${goto 158}${execi 1 sensors | grep 'Core 1' | cut -c17-23}${goto 258}${execi 1 sensors | grep 'Core 2' | cut -c17-23}
+${voffset 37}${goto 58}${execi 1 sensors | grep 'Core 0' | cut -c17-23}${goto 158}${execi 1 sensors | grep 'Core 1' | cut -c17-23}${goto 258}${execi 1 sensors | grep 'Core 2' | cut -c17-23}
+# Processes
+${voffset 25}${color4}${font FontAwesome:size=18}Processes ${color0}${font FontAwesome:size=10}
+${top name 1} $alignr ${top cpu 1}%
+${top name 2} $alignr ${top cpu 2}%
+${top name 3} $alignr ${top cpu 3}%
+${top name 4} $alignr ${top cpu 4}%
+${top name 5} $alignr ${top cpu 5}%
+# Ram
+${voffset 10}${color4}${font FontAwesome:size=18}RAM ${color0}${alignr}${mem}${font FontAwesome:size=10}
+${membar 10,}
+${top_mem name 1} $alignr ${top_mem mem_res 1}
+${top_mem name 2} $alignr ${top_mem mem_res 2}
+${top_mem name 3} $alignr ${top_mem mem_res 3}
+${top_mem name 4} $alignr ${top_mem mem_res 4}
+${top_mem name 5} $alignr ${top_mem mem_res 5}
+${color2}
+#GPU
+${voffset -10}${color4}${font FontAwesome:size=18}GPU ${color0}$alignr${exec nvidia-smi | grep % | cut -c 62-63}%${font FontAwesome:size=10}${color}
+${execgraph "nvidia-smi -i 0 -q -d UTILIZATION | grep -m 1 % | cut -c 39-40" -t 50,}
+Gpu Frequency $alignr ${nvidia gpufreq} Mhz
+${execgraph "nvidia-smi -i 0 -q -d CLOCK | grep -m 1 Graphics | cut -c 39-42 | awk '{print $1/21}'" 50}
+Memory Frequency $alignr ${nvidia memfreq} Mhz
+Temperature $alignr ${nvidia temp} C
+${execgraph "nvidia-smi -i 0 -q -d TEMPERATURE | grep -m 1 'GPU Current Temp' | cut -c 39-40" 50}
